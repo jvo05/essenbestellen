@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paypal Routing</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Hier ist das HTML-Element, in dem der QR-Code angezeigt werden soll -->
+    <div id="qrcode"></div>
+
+    <script>
+        // Die URL der aktuellen Seite abrufen
+        var url = window.location.href;
+        // Den Query-String (Parameterbereich) der URL extrahieren
+        var queryString = url.split('?')[1];
+
+        // Eine Funktion zum Parsen des Query-Strings und Extrahieren der Parameter erstellen
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(queryString);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        // Beispiele, wie du Parameter auslesen kannst
+        var parameter1 = getParameterByName('user');
+        var parameter2 = getParameterByName('value');
+
+        console.log('User: ' + parameter1);
+        console.log('Value: ' + parameter2);
+
+        // Den Link für den QR-Code erstellen
+        var link = "https://www.paypal.com/paypalme/" + parameter1 + "/" + parameter2;
+
+        // Das HTML-Element, in dem der QR-Code angezeigt werden soll
+        var qrcodeElement = document.getElementById("qrcode");
+
+        // QRCode.js verwenden, um den QR-Code zu generieren
+        var qrcode = new QRCode(qrcodeElement, {
+            text: link,
+            width: 128,
+            height: 128
+        });
+    </script>
+    <br>
+    <button id="payButton" target="_blank">Direkt zur PayPal-Seite</button>
+
+    <script>
+        // ... (dein vorhandener JavaScript-Code)
+    
+        // Den Button-Element abrufen
+        var payButton = document.getElementById("payButton");
+    
+        // Eventlistener hinzufügen, um zur generierten URL zu navigieren, wenn der Button geklickt wird
+        payButton.addEventListener("click", function() {
+            window.location.href = link;
+        });
+    </script>
+</body>
+</html>
