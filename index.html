@@ -28,7 +28,7 @@
         }
 
         var parameter1 = getParameterByName('user');
-        var parameter2 = getParameterByName('value');
+        var parameter2 = getParameterByName('value').replace(',', '.');
         var noparms = 0;
 
         console.log('User: ' + parameter1);
@@ -36,12 +36,12 @@
 
         var link;
 
-        if (parameter1 !== null && parameter2 > 0) {
-            link = "https://www.paypal.com/paypalme/" + parameter1 + "/" + parameter2;
-        } else {
+        if (parameter1 !== null && parseFloat(parameter2) > 0) { // Verwenden Sie parseFloat, um sicherzustellen, dass es sich um eine gültige Dezimalzahl handelt
+			link = "https://www.paypal.com/paypalme/" + parameter1 + "/" + parameter2;
+		} else {
 			noparms = 1;
-            alert("No Parameters given! Don't proceed with payment!");
-        }
+			alert("No Parameters given! Don't proceed with payment!");
+}
 
         var qrcodeElement = document.getElementById("qrcode");
         var errorMessage = document.getElementById("errorMessage");
