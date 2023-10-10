@@ -8,12 +8,16 @@
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
-    <!-- Hier ist das HTML-Element, in dem der QR-Code angezeigt werden soll -->
     <div id="qrcode"></div>
+    <br>
+    <p id="errorMessage" style="color:red;"></p>
+    <br>
+    <button id="payButton" target="_blank">Direkt zur PayPal-Seite</button>
 
     <script>
         var url = window.location.href;
         var queryString = url.split('?')[1];
+
         function getParameterByName(name) {
             name = name.replace(/[\[\]]/g, "\\$&");
             var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -25,34 +29,35 @@
 
         var parameter1 = getParameterByName('user');
         var parameter2 = getParameterByName('value');
+        var noparms = 0;
 
         console.log('User: ' + parameter1);
         console.log('Value: ' + parameter2);
 
+        var link;
+
         if (parameter1 !== null && parameter2 > 0) {
-            var link = "https://www.paypal.com/paypalme/" + parameter1 + "/" + parameter2;
+            link = "https://www.paypal.com/paypalme/" + parameter1 + "/" + parameter2;
         } else {
+			noparms = 1;
             alert("No Parameters given! Don't proceed with payment!");
         }
 
         var qrcodeElement = document.getElementById("qrcode");
-
-        var qrcode = new QRCode(qrcodeElement, {
-            text: link,
-            width: 128,
-            height: 128
-        });
-    </script>
-    <br>
-    <button id="payButton" target="_blank">Direkt zur PayPal-Seite</button>
-
-    <script>
-        // ... (dein vorhandener JavaScript-Code)
-    
-        // Den Button-Element abrufen
+        var errorMessage = document.getElementById("errorMessage");
         var payButton = document.getElementById("payButton");
-    
-        // Eventlistener hinzufügen, um zur generierten URL zu navigieren, wenn der Button geklickt wird
+
+        if (noparms === 1) {
+            payButton.style.display = "none";
+            errorMessage.innerText = "No parameters given!";
+        } else {
+            var qrcode = new QRCode(qrcodeElement, {
+                text: link,
+                width: 128,
+                height: 128
+            });
+        }
+
         payButton.addEventListener("click", function() {
             window.location.href = link;
         });
