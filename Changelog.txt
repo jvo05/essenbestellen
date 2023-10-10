@@ -1,3 +1,4 @@
 Changelog von der Essen Bestellen Excel Tabelle
 
 06.10.2023 - Hinzufügen von Automatischem Paypal routing mit Betrag
+10.10.2023 - Abfrage üb parameter gegeben sind im Paypal Routing, und eine Warnung ausgeben
