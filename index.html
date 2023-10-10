@@ -12,12 +12,8 @@
     <div id="qrcode"></div>
 
     <script>
-        // Die URL der aktuellen Seite abrufen
         var url = window.location.href;
-        // Den Query-String (Parameterbereich) der URL extrahieren
         var queryString = url.split('?')[1];
-
-        // Eine Funktion zum Parsen des Query-Strings und Extrahieren der Parameter erstellen
         function getParameterByName(name) {
             name = name.replace(/[\[\]]/g, "\\$&");
             var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -27,20 +23,20 @@
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
 
-        // Beispiele, wie du Parameter auslesen kannst
         var parameter1 = getParameterByName('user');
         var parameter2 = getParameterByName('value');
 
         console.log('User: ' + parameter1);
         console.log('Value: ' + parameter2);
 
-        // Den Link für den QR-Code erstellen
-        var link = "https://www.paypal.com/paypalme/" + parameter1 + "/" + parameter2;
+        if (parameter1 !== null && parameter2 > 0) {
+            var link = "https://www.paypal.com/paypalme/" + parameter1 + "/" + parameter2;
+        } else {
+            alert("No Parameters given! Don't proceed with payment!");
+        }
 
-        // Das HTML-Element, in dem der QR-Code angezeigt werden soll
         var qrcodeElement = document.getElementById("qrcode");
 
-        // QRCode.js verwenden, um den QR-Code zu generieren
         var qrcode = new QRCode(qrcodeElement, {
             text: link,
             width: 128,
